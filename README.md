@@ -84,7 +84,9 @@ Potential future improvements:
 
 ## 🌐 Live Demo
 
-**Coming soon:** Add your GitHub Pages URL here after deployment.
+**[Launch PennyWise — Expense Tracker](https://palak150104.github.io/expense-tracker/)**
+
+Try the live application to manage income, track expenses, and view your monthly spending breakdown.
 
 ## 👩‍💻 Author
 

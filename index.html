@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>PennyWise — Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="app">
+        <header class="topbar">
+            <a class="brand" href="#" aria-label="PennyWise home">
+                <span class="brand-icon">₹</span>
+                <span>PennyWise</span>
+            </a>
+            <span class="privacy-label">🔒 Your data stays in this browser</span>
+        </header>
+
+        <main>
+            <section class="welcome">
+                <div>
+                    <p class="eyebrow">PERSONAL FINANCE</p>
+                    <h1>Know where your money goes.</h1>
+                    <p class="subtitle">Track your income, manage expenses, and stay in control.</p>
+                </div>
+                <div class="month-picker">
+                    <label for="monthFilter">Viewing month</label>
+                    <input type="month" id="monthFilter">
+                </div>
+            </section>
+
+            <section class="summary-grid" aria-label="Financial summary">
+                <article class="summary-card balance-card">
+                    <div class="card-heading">
+                        <span>Total balance</span>
+                        <span class="card-icon">↗</span>
+                    </div>
+                    <p class="summary-amount" id="balance">₹0</p>
+                    <p class="card-note">Income minus expenses</p>
+                </article>
+
+                <article class="summary-card">
+                    <div class="card-heading">
+                        <span>Total income</span>
+                        <span class="card-icon income-icon">↓</span>
+                    </div>
+                    <p class="summary-amount income-text" id="income">₹0</p>
+                    <p class="card-note">Money received this month</p>
+                </article>
+
+                <article class="summary-card">
+                    <div class="card-heading">
+                        <span>Total expenses</span>
+                        <span class="card-icon expense-icon">↑</span>
+                    </div>
+                    <p class="summary-amount expense-text" id="expenses">₹0</p>
+                    <p class="card-note">Money spent this month</p>
+                </article>
+
+                <article class="summary-card">
+                    <div class="card-heading">
+                        <span>Monthly savings</span>
+                        <span class="card-icon savings-icon">◈</span>
+                    </div>
+                    <p class="summary-amount" id="savings">₹0</p>
+                    <p class="card-note" id="savingsNote">Income minus expenses</p>
+                </article>
+            </section>
+
+            <section class="content-grid">
+                <article class="panel form-panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">YOUR MONEY</p>
+                            <h2 id="formTitle">Add transaction</h2>
+                        </div>
+                        <span class="heading-icon">＋</span>
+                    </div>
+
+                    <form id="expenseForm">
+                        <div class="field">
+                            <label for="description">Description</label>
+                            <input type="text" id="description" maxlength="100"
+                                   placeholder="e.g. Monthly groceries" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="amount">Amount (₹)</label>
+                            <input type="number" id="amount" min="0.01"
+                                   max="1000000000000" step="0.01"
+                                   placeholder="e.g. 500" required>
+                        </div>
+
+                        <div class="field">
+                            <label for="type">Transaction type</label>
+                            <select id="type" required>
+                                <option value="expense">Expense</option>
+                                <option value="income">Income</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="category">Category</label>
+                            <select id="category" required></select>
+                        </div>
+
+                        <div class="field">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="primary-btn" id="submitBtn">
+                                Add transaction
+                            </button>
+                            <button type="button" class="secondary-btn hidden"
+                                    id="cancelEditBtn">Cancel</button>
+                        </div>
+                        <p class="form-message" id="formMessage" role="status"></p>
+                    </form>
+                </article>
+
+                <article class="panel spending-panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">MONTHLY OVERVIEW</p>
+                            <h2>Spending breakdown</h2>
+                        </div>
+                        <span class="heading-icon">◉</span>
+                    </div>
+
+                    <div id="categoryBreakdown" class="category-breakdown"></div>
+                    <p class="empty-state" id="breakdownEmpty">
+                        Add an expense to see where your money goes.
+                    </p>
+                </article>
+            </section>
+
+            <section class="panel history-panel">
+                <div class="history-heading">
+                    <div>
+                        <p class="eyebrow">YOUR RECORDS</p>
+                        <h2>Transactions</h2>
+                        <p class="subtitle small-subtitle">Review and manage your activity.</p>
+                    </div>
+                    <span class="transaction-count" id="transactionCount">0 transactions</span>
+                </div>
+
+                <div class="filters">
+                    <div class="search-field">
+                        <span aria-hidden="true">⌕</span>
+                        <input type="search" id="searchInput"
+                               placeholder="Search transactions..." aria-label="Search transactions">
+                    </div>
+
+                    <select id="typeFilter" aria-label="Filter by type">
+                        <option value="all">All types</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expenses</option>
+                    </select>
+
+                    <select id="categoryFilter" aria-label="Filter by category">
+                        <option value="all">All categories</option>
+                    </select>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th class="amount-column">Amount</th>
+                                <th class="actions-column">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionList"></tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state history-empty" id="historyEmpty">
+                    <span class="empty-icon">₹</span>
+                    <h3>No transactions found</h3>
+                    <p>Add a transaction or change your filters.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>PennyWise · A simple way to understand your money.</p>
+            <p>Data is stored locally in this browser. It is not synced across devices.</p>
+        </footer>
+    </div>
+
+    <dialog id="deleteDialog" class="confirm-dialog">
+        <h2>Delete transaction?</h2>
+        <p>This transaction will be permanently removed from this browser.</p>
+        <div class="dialog-actions">
+            <button type="button" class="secondary-btn" id="keepTransaction">Cancel</button>
+            <button type="button" class="danger-btn" id="confirmDelete">Delete</button>
+        </div>
+    </dialog>
+</body>
+</html>
+```
